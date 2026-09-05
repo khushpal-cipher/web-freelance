@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Technician {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String?
+  homeLat     Float
+  homeLng     Float
+  smsOptOut   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  jobs        Job[]
+}
+
+enum JobStatus {
+  UNASSIGNED
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+model Job {
+  id            String     @id @default(cuid())
+  technicianId  String?
+  technician    Technician? @relation(fields: [technicianId], references: [id])
+  title         String
+  address       String
+  lat           Float
+  lng           Float
+  startAt       DateTime
+  durationMins  Int
+  status        JobStatus  @default(UNASSIGNED)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([technicianId, startAt])
+}

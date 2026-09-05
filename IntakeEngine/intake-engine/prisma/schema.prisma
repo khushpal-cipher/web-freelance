@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubmissionStatus {
+  IN_PROGRESS
+  SIGNED
+  PROVISIONED
+}
+
+model Submission {
+  id            String            @id @default(cuid())
+  resumeToken   String            @unique @default(cuid())
+  data          Json              @default("{}")
+  currentStep   String            @default("business-info")
+  status        SubmissionStatus  @default(IN_PROGRESS)
+  signedAt      DateTime?
+  signatureUrl  String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  provisionedAccount ProvisionedAccount?
+
+  @@index([resumeToken])
+}
+
+model ProvisionedAccount {
+  id            String     @id @default(cuid())
+  submissionId  String     @unique
+  submission    Submission @relation(fields: [submissionId], references: [id])
+  createdAt     DateTime   @default(now())
+  welcomeSentAt DateTime?
+}

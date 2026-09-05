@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khushpal Singh Chouhan — Web developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#E7E6E1;
+    --ink:#000000;
+    --muted:#5C5C55;
+    --rule:#C9C8C1;
+    --accent:#1B36F0;
+    --display:'Bricolage Grotesque', system-ui, sans-serif;
+    --body:'Instrument Sans', system-ui, sans-serif;
+    --gutter:clamp(20px, 5vw, 76px);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--canvas); color:var(--ink);
+    font-family:var(--body); font-size:17px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    position:fixed; inset:0 0 auto 0; z-index:80;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px var(--gutter);
+    mix-blend-mode:difference; color:#fff;
+  }
+  .masthead a{text-decoration:none;font-weight:500;font-size:14px;}
+  .masthead nav{display:flex;gap:26px;}
+  @media (max-width:620px){ .masthead nav a.hide-sm{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh; padding:0 var(--gutter) 64px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    border-bottom:1px solid var(--rule);
+  }
+  .hero-type{
+    font-family:var(--display); font-weight:800;
+    font-size:clamp(2.6rem, 8.2vw, 7.4rem);
+    line-height:.94; letter-spacing:-.035em;
+    margin:0 0 30px; min-height:1.9em; max-width:15ch;
+  }
+  .caret{
+    display:inline-block; width:.055em; height:.86em;
+    background:var(--accent); vertical-align:-.06em;
+    margin-left:.06em; animation:blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero-foot{
+    display:flex; flex-wrap:wrap; gap:40px 72px;
+    align-items:flex-end; justify-content:space-between;
+    border-top:1px solid var(--rule); padding-top:26px;
+  }
+  .hero-foot p{margin:0; max-width:46ch; font-size:1.05rem; color:var(--muted);}
+  .hero-foot p strong{color:var(--ink); font-weight:500;}
+  .avail{display:flex;align-items:center;gap:9px;font-size:14px;white-space:nowrap;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+
+  /* ---------- section heads ---------- */
+  .section-head{
+    padding:88px var(--gutter) 34px;
+    display:flex; justify-content:space-between; align-items:baseline; gap:24px;
+  }
+  .section-head h2{
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(1.5rem,3.1vw,2.3rem); letter-spacing:-.02em; margin:0;
+  }
+  .section-head span{font-size:14px;color:var(--muted);}
+
+  /* ---------- about ---------- */
+  .about{
+    padding:0 var(--gutter) 96px;
+    display:grid; grid-template-columns:repeat(12,1fr); gap:32px;
+  }
+  .about-lede{
+    grid-column:1 / span 7; margin:0;
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(1.35rem,2.9vw,2.15rem); line-height:1.28; letter-spacing:-.02em;
+  }
+  .about-list{grid-column:9 / span 4; margin:.4rem 0 0; padding:0; list-style:none;}
+  .about-list li{
+    display:flex; justify-content:space-between; gap:18px;
+    padding:11px 0; border-top:1px solid var(--rule); font-size:15px;
+  }
+  .about-list li span:last-child{color:var(--muted); text-align:right;}
+  @media (max-width:860px){ .about-lede,.about-list{grid-column:1 / -1;} }
+
+  /* ================= WORK ================= */
+  .work-track{position:relative;}
+  .work-stage{
+    position:sticky; top:0;
+    height:100vh; overflow:hidden;
+    background:#0A0C12;
+  }
+  /* soft colour behind the glass so the blur has something to chew on */
+  .glow{position:absolute; border-radius:50%; filter:blur(90px); opacity:.55;}
+  .glow-a{width:52vw; height:52vw; left:-8vw; top:-10vw; background:#1B36F0;}
+  .glow-b{width:44vw; height:44vw; right:-6vw; bottom:-12vw; background:#7A3BFF;}
+  .glow-c{width:34vw; height:34vw; left:38vw; top:44vh; background:#0E7C7B; opacity:.4;}
+
+  .proj{position:absolute; inset:0;}
+
+  /* --- project name card --- */
+  .proj-title{
+    position:absolute; inset:0; z-index:5;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 var(--gutter); color:#fff; will-change:transform,opacity;
+  }
+  .proj-meta{
+    display:flex; gap:14px; font-size:14px; opacity:.72; margin-bottom:16px;
+  }
+  .proj-title h3{
+    font-family:var(--display); font-weight:800;
+    font-size:clamp(2.3rem,7.4vw,5.8rem); line-height:.98;
+    letter-spacing:-.035em; margin:0 0 20px; max-width:15ch;
+  }
+  .proj-title p{margin:0; max-width:52ch; font-size:1.05rem; opacity:.78; color:#fff;}
+  .proj-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;}
+  .proj-tags span{
+    font-size:13px; padding:5px 12px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.4); color:#fff;
+  }
+
+  /* --- the glass screenshot stack --- */
+  .proj-shots{
+    position:absolute; inset:0; z-index:6;
+    display:flex; align-items:center; justify-content:center;
+    will-change:transform,opacity;
+  }
+  .shot{
+    position:absolute; margin:0;
+    width:min(880px, 74vw);
+    height:min(600px, 66vh);
+    border-radius:24px;
+    overflow:hidden;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.30);
+    -webkit-backdrop-filter:blur(16px) saturate(150%);
+    backdrop-filter:blur(16px) saturate(150%);
+    box-shadow:0 34px 80px -34px rgba(0,0,0,.75);
+    will-change:transform,opacity;
+  }
+  .shot img{
+    width:100%; height:100%; display:block;
+    object-fit:cover; object-position:top center;
+    opacity:.92;
+  }
+  .shot figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:12px 18px; font-size:13px; color:#fff;
+    background:linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0));
+  }
+
+  .work-counter{
+    position:absolute; z-index:20; top:74px; right:var(--gutter);
+    font-size:14px; color:#fff; opacity:.75;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{padding:110px var(--gutter) 40px;}
+  .contact h2{
+    font-family:var(--display); font-weight:800;
+    font-size:clamp(2.1rem,6.6vw,5.4rem); line-height:1;
+    letter-spacing:-.035em; margin:0 0 34px; max-width:16ch;
+  }
+  .mail{
+    display:inline-block; font-size:clamp(1.05rem,2.2vw,1.5rem);
+    text-decoration:none; border-bottom:2px solid var(--accent); padding-bottom:3px;
+  }
+  .mail:hover{color:var(--accent);}
+  .colophon{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px;
+    margin-top:90px; padding-top:20px; border-top:1px solid var(--rule);
+    font-size:14px; color:var(--muted);
+  }
+  .colophon a{text-decoration:none;}
+  .colophon a:hover{color:var(--accent);}
+
+  /* ---------- fallback ---------- */
+  .no-pin .work-track{height:auto !important;}
+  .no-pin .work-stage{position:static; height:auto; overflow:visible; padding:60px 0;}
+  .no-pin .proj{position:relative; inset:auto; opacity:1 !important; margin-bottom:50px;}
+  .no-pin .proj-title{position:relative; inset:auto; transform:none !important;
+    opacity:1 !important; padding:0 var(--gutter) 26px;}
+  .no-pin .proj-shots{position:relative; inset:auto; display:block;
+    transform:none !important; opacity:1 !important; padding:0 var(--gutter);}
+  .no-pin .shot{position:relative; width:100%; height:52vh;
+    transform:none !important; opacity:1 !important; margin-bottom:14px;}
+  .no-pin .work-counter{display:none;}
+  @media (prefers-reduced-motion:reduce){ .caret{animation:none;} }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="#top">Khushpal Singh Chouhan</a>
+  <nav><a href="#work" class="hide-sm">Work</a><a href="#contact">Contact</a></nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <h1 class="hero-type"><span id="tw"></span><span class="caret" aria-hidden="true"></span></h1>
+    <div class="hero-foot">
+      <p><strong>I build fast, well-made websites and web apps for people who need one that works.</strong> Based in Pune, working with clients anywhere. Comfortable across the stack, with a background in machine learning when a project needs something smarter than a form.</p>
+      <div class="avail"><span class="dot"></span> Taking on projects for late 2026</div>
+    </div>
+  </section>
+
+  <div class="section-head"><h2>About</h2><span>01</span></div>
+  <section class="about">
+    <p class="about-lede">I started building because I wanted things to exist that didn't yet. That hasn't changed — I just got better at shipping them. Most of my work sits where clean interfaces meet real data pipelines.</p>
+    <ul class="about-list">
+      <li><span>Based in</span><span>Pune, India</span></li>
+      <li><span>Focus</span><span>Web development</span></li>
+      <li><span>Also</span><span>Applied ML</span></li>
+      <li><span>Works in</span><span>Python, Go, JS</span></li>
+      <li><span>Status</span><span>Available</span></li>
+    </ul>
+  </section>
+
+  <div class="section-head" id="work"><h2>Selected work</h2><span>02</span></div>
+
+  <section class="work-track" id="track">
+    <div class="work-stage" id="stage">
+      <div class="glow glow-a"></div>
+      <div class="glow glow-b"></div>
+      <div class="glow glow-c"></div>
+      <div class="work-counter"><span id="counter">01</span> / <span id="total">3</span></div>
+      <!-- projects are generated from the PROJECTS array below -->
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Have something you want built?</h2>
+    <a class="mail" href="mailto:hello@example.com">hello@example.com</a>
+    <div class="colophon">
+      <span>Khushpal Singh Chouhan — Pune, India</span>
+      <span><a href="#">GitHub</a> &nbsp;·&nbsp; <a href="#">LinkedIn</a> &nbsp;·&nbsp; <a href="#">X</a></span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* =======================================================================
+     EDIT HERE — one entry per project. "shots" are the page screenshots
+     that stack up. Add or remove freely; the scroll timing adjusts itself.
+     ======================================================================= */
+  var PROJECTS = [
+    {
+      name: 'Universal Log Pre-processing Framework',
+      kind: 'Data pipeline',
+      year: '2026',
+      blurb: 'Takes messy logs from anywhere and turns them into one clean, searchable format. I led the machine learning side — template mining, field mapping, and a local model that handles what the earlier stages can\u2019t classify.',
+      tags: ['Python', 'ONNX', 'FastAPI', 'Drain3'],
+      shots: [
+        { src: 'screenshots/ulpf-1.png', label: 'Ingest dashboard' },
+        { src: 'screenshots/ulpf-2.png', label: 'Template mining' },
+        { src: 'screenshots/ulpf-3.png', label: 'Anomaly review' }
+      ]
+    },
+    {
+      name: 'Prompt Wars',
+      kind: 'Web app',
+      year: '2026',
+      blurb: 'A competitive prompting platform built with ADYPU. Players write prompts against a shared brief and get scored on the output, with a live scoring loop running on the Gemini API.',
+      tags: ['JavaScript', 'Gemini API', 'Realtime'],
+      shots: [
+        { src: 'screenshots/pw-1.png', label: 'Landing' },
+        { src: 'screenshots/pw-2.png', label: 'Match view' },
+        { src: 'screenshots/pw-3.png', label: 'Leaderboard' }
+      ]
+    },
+    {
+      name: 'Crash detection from sensor data',
+      kind: 'Machine learning',
+      year: '2025',
+      blurb: 'Reads accelerometer readings and flags a likely vehicle collision. Small, self-contained, and the project that got me into applied ML properly.',
+      tags: ['Python', 'pandas', 'scikit-learn'],
+      shots: [
+        { src: 'screenshots/crash-1.png', label: 'Signal view' },
+        { src: 'screenshots/crash-2.png', label: 'Model output' }
+      ]
+    }
+  ];
+
+  /* ---------------- typewriter ---------------- */
+  var PHRASES = ['Khushpal Singh Chouhan', 'Web developer', 'Freelancer'];
+  var out = document.getElementById('tw');
+  var pi = 0, ci = 0, deleting = false;
+  if (reduce) {
+    out.textContent = PHRASES[0];
+  } else {
+    (function tick() {
+      var word = PHRASES[pi];
+      ci += deleting ? -1 : 1;
+      out.textContent = word.slice(0, ci);
+      var wait = deleting ? 34 : 68;
+      if (!deleting && ci === word.length) { wait = 1500; deleting = true; }
+      else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % PHRASES.length; wait = 380; }
+      setTimeout(tick, wait);
+    })();
+  }
+
+  /* ---------------- build the project DOM ---------------- */
+  var stage = document.getElementById('stage');
+  var track = document.getElementById('track');
+  var counter = document.getElementById('counter');
+  document.getElementById('total').textContent = PROJECTS.length;
+
+  var groups = PROJECTS.map(function (p, i) {
+    var el = document.createElement('div');
+    el.className = 'proj';
+
+    var num = ('0' + (i + 1)).slice(-2);
+    var tags = p.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+    var shots = p.shots.map(function (s) {
+      return '<figure class="shot">' +
+               '<img src="' + s.src + '" alt="' + s.label + '" onerror="this.style.display=\'none\'">' +
+               '<figcaption>' + s.label + '</figcaption>' +
+             '</figure>';
+    }).join('');
+
+    el.innerHTML =
+      '<div class="proj-title">' +
+        '<div class="proj-meta"><span>' + num + '</span><span>' + p.kind + '</span><span>' + p.year + '</span></div>' +
+        '<h3>' + p.name + '</h3>' +
+        '<p>' + p.blurb + '</p>' +
+        '<div class="proj-tags">' + tags + '</div>' +
+      '</div>' +
+      '<div class="proj-shots">' + shots + '</div>';
+
+    stage.appendChild(el);
+    return {
+      root: el,
+      title: el.querySelector('.proj-title'),
+      shotWrap: el.querySelector('.proj-shots'),
+      shots: [].slice.call(el.querySelectorAll('.shot'))
+    };
+  });
+
+  /* ---------------- scroll timeline ----------------
+     Per project:  NAME units for the name, SHOT units per screenshot,
+     then CLEAR units while the stack drops away.                        */
+  var NAME = 1.0, SHOT = 0.9, CLEAR = 0.7;
+
+  var spans = PROJECTS.map(function (p) { return NAME + p.shots.length * SHOT + CLEAR; });
+  var starts = [], acc = 0;
+  spans.forEach(function (s) { starts.push(acc); acc += s; });
+  var TOTAL = acc;
+
+  var vh = window.innerHeight;
+  function pinned() { return !reduce && window.innerWidth >= 760; }
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function easeOut(x) { return 1 - Math.pow(1 - x, 3); }
+
+  function layout() {
+    vh = window.innerHeight;
+    if (!pinned()) {
+      document.body.classList.add('no-pin');
+      track.style.height = '';
+      return;
+    }
+    document.body.classList.remove('no-pin');
+    track.style.height = Math.round(vh * (TOTAL + 1)) + 'px';
+    render();
+  }
+
+  function render() {
+    if (!pinned()) return;
+    var scrollable = track.offsetHeight - vh;
+    if (scrollable <= 0) return;
+
+    var p = clamp(-track.getBoundingClientRect().top / scrollable);
+    var t = p * TOTAL;
+
+    var active = 0;
+
+    groups.forEach(function (g, i) {
+      var local = t - starts[i];
+      var span = spans[i];
+
+      // outside this project's window entirely
+      if (local < -0.05 || local > span + 0.05) {
+        g.root.style.opacity = '0';
+        g.root.style.visibility = 'hidden';
+        return;
+      }
+      g.root.style.opacity = '1';
+      g.root.style.visibility = 'visible';
+      if (local >= 0 && local <= span) active = i;
+
+      /* --- name: rises from below, holds, fades out --- */
+      var inP  = easeOut(clamp(local / 0.42));
+      var outP = clamp((local - 0.70) / 0.30);
+      g.title.style.opacity = String(inP * (1 - outP));
+      g.title.style.transform =
+        'translate3d(0,' + ((1 - inP) * 80 - outP * 45).toFixed(1) + 'px,0)';
+
+      /* --- screenshots: rise one by one and stack, offset so edges show --- */
+      var st = local - NAME;
+      g.shots.forEach(function (shot, j) {
+        var e = easeOut(clamp((st - j * SHOT) / SHOT));
+        var rest = -j * 18;                 // each new card sits a little higher
+        var y = (1 - e) * vh * 0.8 + rest;
+        var scale = 0.95 + e * 0.05;
+        shot.style.zIndex = String(j + 1);
+        shot.style.opacity = String(e);
+        shot.style.transform =
+          'translate3d(0,' + y.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ')';
+      });
+
+      /* --- clear: the whole stack drops away before the next name --- */
+      var ct = clamp((local - NAME - g.shots.length * SHOT) / CLEAR);
+      g.shotWrap.style.transform = 'translate3d(0,' + (ct * vh * 0.85).toFixed(1) + 'px,0)';
+      g.shotWrap.style.opacity = String(1 - ct);
+    });
+
+    counter.textContent = ('0' + (active + 1)).slice(-2);
+  }
+
+  var queued = false;
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { render(); queued = false; });
+  }
+
+  layout();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', layout);
+})();
+</script>
+</body>
+</html>
